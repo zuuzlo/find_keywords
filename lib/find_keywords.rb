@@ -59,6 +59,8 @@ module FindKeywords
 
     def keywords
       slug = @sentence
+      slug.gsub!(/(\d{2}|\d{1})\/(\d{2}|\d{1})(-|.-.)(\d{2}|\d{1})\/(\d{2}|\d{1})/, "") #add rev 0.0.2 remove date
+      slug.gsub!(/(Sept|Oct|Nov|Dec|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug)(\s*)(\d*|)(-|.-.|)/, "") #add rev 0.0.2 remove date
       slug.gsub! /['`]/,""
       slug.gsub! /\s*@\s*/, " at "
       slug.gsub! /\s*&\s*/, " and "

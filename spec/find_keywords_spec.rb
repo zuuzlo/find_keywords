@@ -94,5 +94,11 @@ describe "FindKeywords" do
       keywords = FindKeywords::Keywords.new(sentence).keywords
       expect(keywords).to eq(["yellow", "jeans"])
     end
+
+    it "removes date Oct - 25" do
+      sentence = "Dana Buchman Apparel with code DANA10. Sept 24 – Oct 4"
+      keywords = FindKeywords::Keywords.new(sentence).keywords
+      expect(keywords).to eq(["dana", "buchman", "apparel"])
+    end
   end
 end
