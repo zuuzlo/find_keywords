@@ -35,6 +35,12 @@ describe "FindKeywords" do
 
     context "remove unneeded characters" do
 
+      it "removes $ % inside words" do
+        sentence = "The $100 savings$20 cashback save%20 now"
+        keywords = FindKeywords::Keywords.new(sentence).keywords
+        expect(keywords).to eq(["savings", "cashback", "save"])
+      end
+
       it "removes apostrophes" do
         sentence = "Kirk's"
         keywords = FindKeywords::Keywords.new(sentence).keywords
@@ -97,8 +103,8 @@ describe "FindKeywords" do
       end
 
       it "removes date Oct - 25 and specific removal list" do
-        industry_specific_words = FindKeywords::RemoveWordsList.new(%w(code with))
-        sentence = "Dana Buchman Apparel with code DANA10. Sept 24 – Oct 4"
+        industry_specific_words = FindKeywords::RemoveWordsList.new(%w(code with sept oct))
+        sentence = "Dana Buchman Apparel with code DANA10. Sept 24 – Oct 4 10-20-2014"
         keywords = FindKeywords::Keywords.new(sentence, industry_specific_words).keywords
         expect(keywords).to eq(["dana", "buchman", "apparel"])
       end
@@ -159,6 +165,14 @@ describe "FindKeywords" do
 
       it "last word is yourselves" do
         expect(FindKeywords::RemoveWordsList.all_custom.last).to eq("me")
+      end
+    end
+  end
+  
+  describe "find_keywords_string" do
+    describe ".keywords" do
+      it "returns keywords from string" do
+        expect("the is a and know".keywords).to eq(["know"])
       end
     end
   end

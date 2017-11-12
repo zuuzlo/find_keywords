@@ -72,7 +72,7 @@ module FindKeywords
     end
 
     def self.stop_words
-      STOP_WORDS + MARKET_WORDS
+      STOP_WORDS
     end
   end
 end

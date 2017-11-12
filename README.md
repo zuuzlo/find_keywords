@@ -18,16 +18,17 @@ Or install it yourself as:
 
 ## Usage
 
-Find keywords is used to take a string (sentence), list (array), or a hash and return only keyword.  It removes the stop words and list of other words.
+Find keywords is used to take a string (sentence), list (array), or a hash and return only keywords.  It will remove the stop words and / or a list of other words provided.
 
 You can now add a custom list of removal words using the class RemoveWordsList.
+
 ```ruby
 industry_specific_words= FindKeywords::RemoveWordsList.new(%w(free shipping members for))
 sentence = "free shipping For women members"
 keywords = FindKeywords::Keywords.new(sentence, industry_specific_words).keywords
 keywords => ["women"]
 ```
-Three option use the specifice list as shown above. 
+There are three option for removing word lists.
 
 Use both costum list and stop word list by add "all".
 

@@ -1,5 +1,6 @@
 require "find_keywords/version"
 require "find_keywords/remove_words_list"
+require "find_keywords/find_keywords_string"
 
 module FindKeywords
   class Keywords
@@ -23,30 +24,18 @@ module FindKeywords
     private
 
     def find_keywords(sentence, word_list)
-      #remove_words = FindKeywords::RemoveWordsList.stop_words
       slug = sentence.downcase
-      slug.gsub!(/(\d{2}|\d{1})\/(\d{2}|\d{1})(-|.-.)(\d{2}|\d{1})\/(\d{2}|\d{1})/, "") #add rev 0.0.2 remove date
-      slug.gsub!(/(sept|oct|nov|dec|jan|feb|mar|apr|may|jun|jul|aug)(\s*)(\d*|)(-|.-.|)/, "") #add rev 0.0.2 remove date
+      #slug.gsub!(/(\d{2}|\d{1})\/(\d{2}|\d{1})(-|.-.)(\d{2}|\d{1})\/(\d{2}|\d{1})/, "") #add rev 0.0.2 remove date
+      #slug.gsub!(/(sept|oct|nov|dec|jan|feb|mar|apr|may|jun|jul|aug)(\s*)(\d*|)(-|.-.|)/, "") #add rev 0.0.2 remove date
       slug.gsub! /['`]/,""
-      slug.gsub! /\s*@\s*/, " at "
-      slug.gsub! /\s*&\s*/, " and "
-      slug.gsub! /\s*[^A-Za-z0-9\.\-]\s*/, ' '
-      #slug.gsub! /\ \d+/, ''
-      slug.gsub!(/[^a-zA-Z ]/,'')
+      slug.gsub! /\s*[^A-Za-z]\s*/, ' '
       slug.gsub!(/ +/,' ')
-      #convert double underscores to single
-      #slug.gsub! /_+/,"_"
-      #strip off leading/trailing underscore
-      #slug.gsub! /\A[_\.]+|[_\.]+\z/,""  
+      slug.gsub!(/^\s|\s$/,'')
       words = slug.downcase.scan(/\w+/)
-      slug_words = words.select { |word| !remove_words(word_list).include?(word)}
-      #slug_words = words.select { |word| !STOP_WORDS.include?(word)}
-      #slug_words = slug_words.select { |word| !MARKET_WORDS.include?(word)}
-      slug = slug_words.join(' ')
-      keywords = slug.scan(/\w+/)
+      keywords = words.select { |word| !remove_words(word_list).include?(word) }
       keywords.delete_if { |word| word.size <= 2 }
       keywords.uniq! if keywords.uniq
-      return keywords
+      keywords
     end
 
     def remove_words(word_list)
